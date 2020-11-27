@@ -204,9 +204,6 @@ def main(win, width):
             if event.type == pygame.QUIT:
                 run = False
 
-            if started:
-                continue
-
             if pygame.mouse.get_pressed()[0]: # LEFT MOUSE BUTTOn
                 pos = pygame.mouse.get_pos()
                 row, col = get_clicked_pos(pos, ROWS, width)
@@ -233,12 +230,17 @@ def main(win, width):
                     end = None
 
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE and not started:
+                if event.key == pygame.K_SPACE and start and end:
                     for row in grid:
                         for node in row:
                             node.update_neightbors(grid)
 
                     algorithm(lambda: draw(win, grid, ROWS, width), grid, start, end)
+                
+                if event.key == pygame.K_c:
+                    start = None
+                    end = None
+                    grid = make_grid(ROWS, width)
 
     pygame.quit()
 
